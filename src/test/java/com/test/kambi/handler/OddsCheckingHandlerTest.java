@@ -12,10 +12,10 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public class OddsCheckingHandlerTest {
 
-    OddsCheckingHandler oddsCheckingHandler;
+    private OddsCheckingHandler oddsCheckingHandler;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         oddsCheckingHandler = OddsCheckingHandler.getInstance();
         List<Integer> previousOdds = Arrays.asList(1120, 2120, 3000);
         oddsCheckingHandler.setPreviousOdds(previousOdds);

@@ -1,10 +1,17 @@
 package com.test.kambi.handler;
 
+import com.test.kambi.exception.BadResponseException;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class NetworkHandler {
 
@@ -12,27 +19,19 @@ public class NetworkHandler {
 
     private static final String MESSAGE_TYPE = "application/json";
 
-    private static final Integer TIMEOUT_IN_SECONDS = 8;
+    private static final Integer TIMEOUT_IN_SECONDS = 5;
 
-    private static NetworkHandler networkHandler;
+    private static final Integer STATUS_CODE_OK = 200;
 
     private HttpClient httpClient;
 
     private HttpRequest httpRequest;
 
-    private NetworkHandler() {
+    public NetworkHandler(){
+        initialize();
     }
 
-    public static NetworkHandler getInstance() {
-        if (networkHandler == null) {
-            synchronized(NetworkHandler.class){
-                networkHandler = new NetworkHandler();
-            }
-        }
-        return networkHandler;
-    }
-
-    public void initialize() {
+    private void initialize() {
         this.httpClient = HttpClient.newHttpClient();
         this.httpRequest = HttpRequest.newBuilder()
                 .GET()
@@ -42,11 +41,16 @@ public class NetworkHandler {
                 .build();
     }
 
-    public Optional<HttpClient> getHttpClient() {
-        return Optional.of(this.httpClient);
-    }
+    public Optional<String> getApiResponseBody() throws InterruptedException, ExecutionException, TimeoutException {
 
-    public Optional<HttpRequest> getHttpRequestObject() {
-        return Optional.of(this.httpRequest);
+        CompletableFuture<HttpResponse<String>> response =
+                httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        int statusCode = response.thenApply(HttpResponse::statusCode).get(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+        //Doesn't check all the possible scenarios here. Only interested in '200 OK' response.
+        if(!(STATUS_CODE_OK == statusCode)){
+            throw new BadResponseException("Bad response returned from the server.");
+        }
+        return Optional.of(response.thenApply(HttpResponse::body).get(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS));
     }
 }

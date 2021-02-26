@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class LiveEventTest {
 
-    long targetEventId = 105405;
+    private long targetEventId = 105405;
 
     @Test
     public void isTargetEvent() {

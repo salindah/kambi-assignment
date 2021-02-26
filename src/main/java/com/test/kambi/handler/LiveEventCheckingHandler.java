@@ -10,8 +10,10 @@ public class LiveEventCheckingHandler {
 
     public void start(long targetEventId) {
 
-        NetworkHandler.getInstance().initialize();
+        NetworkHandler networkHandler = new NetworkHandler();
+        ResponseHandler responseHandler = new ResponseHandler();
         Timer timer = new Timer();
-        timer.schedule(new EventCheckerTask(targetEventId), 0, FREQUENCY_IN_MILLISECONDS);
+        timer.schedule(new EventCheckerTask(networkHandler, responseHandler, targetEventId),
+                0, FREQUENCY_IN_MILLISECONDS);
     }
 }
