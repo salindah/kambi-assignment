@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class responsible for parse the response and print required details.
+ */
 public class ResponseHandler {
 
     public void handleResponseBody(String response, long targetEventId) throws IOException {
@@ -27,6 +30,7 @@ public class ResponseHandler {
                 if (targetEvent.getOddsList().isPresent()) {
                     List<Integer> currentOddsList = targetEvent.getOddsList().get();
                     OddsCheckingHandler oddsCheckingHandler = OddsCheckingHandler.getInstance();
+                    //If it first time, print event name and odds, otherwise prints odds only if they have changed.
                     if (oddsCheckingHandler.isFirstTime()) {
                         PrintUtils.printEventName(targetEvent.getEvent());
                         PrintUtils.printOddsListDetails(targetEvent.getMainBetOffer());

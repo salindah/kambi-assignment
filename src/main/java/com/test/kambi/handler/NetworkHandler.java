@@ -1,7 +1,6 @@
 package com.test.kambi.handler;
 
 import com.test.kambi.exception.BadResponseException;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,6 +12,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * The class is responsible for connecting to the API and returning the response.
+ * comments.
+ */
 public class NetworkHandler {
 
     private static final String LIVE_EVENTS_URL = "https://eu-offering.kambicdn.org/offering/v2018/ubse/event/live/open.json";
@@ -29,6 +32,12 @@ public class NetworkHandler {
 
     public NetworkHandler(){
         initialize();
+    }
+
+    //Only used for testing purposes.
+    public NetworkHandler(HttpClient httpClient, HttpRequest httpRequest){
+        this.httpClient = httpClient;
+        this.httpRequest = httpRequest;
     }
 
     private void initialize() {

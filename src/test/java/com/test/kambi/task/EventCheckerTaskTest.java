@@ -9,10 +9,7 @@ import com.test.kambi.model.LiveEvent;
 import com.test.kambi.model.ResponseBody;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,9 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.*;
-
-public class EventCheckerTaskTest extends Mockito{
+public class EventCheckerTaskTest extends Mockito {
 
     private ObjectMapper mapper;
 
@@ -34,7 +29,7 @@ public class EventCheckerTaskTest extends Mockito{
     }
 
     @Test
-    public void run() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+    public void runTest() throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         NetworkHandler networkHandler = mock(NetworkHandler.class);
 
@@ -58,16 +53,9 @@ public class EventCheckerTaskTest extends Mockito{
         event1.setTags(Arrays.asList("MATCH", "OPEN_FOR_LIVE"));
         liveEvent1.setEvent(event1);
 
-        LiveEvent liveEvent2 = new LiveEvent();
-        Event event2 = new Event();
-        event2.setId(200046);
-        event2.setTags(Arrays.asList("COMPETITION", "OPEN_FOR_LIVE"));
-        liveEvent2.setEvent(event2);
-
         liveEvents.add(liveEvent1);
-        liveEvents.add(liveEvent2);
-
         responseBody.setLiveEvents(liveEvents);
-        return Optional.of( mapper.writeValueAsString(responseBody));
+
+        return Optional.of(mapper.writeValueAsString(responseBody));
     }
 }

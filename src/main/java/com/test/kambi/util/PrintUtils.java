@@ -6,6 +6,9 @@ import com.test.kambi.model.MainBetOffer;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * A utility class that do some formatting work and print the odd records.
+ */
 public class PrintUtils {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
